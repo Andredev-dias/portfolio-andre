@@ -1,4 +1,5 @@
 import styles from './App.module.css'
+
 import fotoPerfil from '/foto1.png'
 import facebookIcon from '/facebook.webp'
 import instagramIcon from '/instagram.webp'
@@ -11,12 +12,35 @@ import viteImg from '/VITE.png'
 import vercelImg from '/VERCEL.png'
 import reactImg from '/REACT.png'
 
-
-
+import { useState } from 'react'
 
 function App() {
 
-  //javascript
+  const defaultPhoneNumber = '5541999999999'
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
+
+  const handleChange = (event) => {
+    const {name, value} = event.target
+    setFormData({...formData, [name]: value})
+  }
+
+  // console.log(formData)
+  
+  const handleZap = () => {
+    const {name, email, message} = formData
+
+    const urlZap = `https://api.whatsapp.com/send?phone=${defaultPhoneNumber}&text=
+    Nome:%20${name}%0D%0A
+    Email:%20${email}%0D%0A
+    Mensagem:%20${message}%0D%0A`
+
+    window.open(urlZap, "_blank")
+  }
 
   return (
     <>
@@ -91,12 +115,23 @@ function App() {
         </section>
 
         <section id='s3'>
-          <h2>sessao 3</h2>
+          <h2>Github repositórios</h2>
         </section>
 
-        <section id='s4'>
-          <h2>sessao 4</h2>
+
+        <section id='s4' className={styles.s4}>
+          <h2>CONTATO</h2>
+          <div className={styles.formData}>
+            <label htmlFor="name">Informe seu nome</label>
+            <input type="text" id='name' name='name' value={formData.name} onChange={handleChange} required />
+            <label htmlFor="email">Informe seu email</label>
+            <input type="email" id='email' name='email' value={formData.email} onChange={handleChange} required />
+            <label htmlFor="message">Informe uma mensagem</label>
+            <textarea name="message" id="message" value={formData.message} onChange={handleChange} cols="30" rows="10" required></textarea>
+            <button onClick={handleZap}>Enviar mensagem</button>
+          </div>
         </section>
+        
       </main>
       <footer className={styles.rodape}>
         <a href="https://www.facebook.com" target='_blank' rel='noopener noreferrer'> <img width={70} src={facebookIcon} alt="Facebook" /> </a>

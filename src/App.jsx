@@ -5,16 +5,20 @@ import facebookIcon from '/facebook.webp'
 import instagramIcon from '/instagram.webp'
 import linkedinIcon from '/linkedin.webp'
 import whatsappIcon from '/whatsapp.webp'
-import htmlImg from '/HTML.png'
-import cssImg from '/CSS.png'
-import jsImg from '/JS.png'
-import viteImg from '/VITE.png'
-import vercelImg from '/VERCEL.png'
-import reactImg from '/REACT.png'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Card } from './components/card'
 
 function App() {
+  const [dados, setDados] = useState([])
+
+  useEffect(() => {
+      fetch('/cardsInfo.json')
+        .then(response => response.json())
+        .then(data => {
+          setDados(data)
+        })
+  }, [])
 
   const defaultPhoneNumber = '5541999999999'
 
@@ -28,8 +32,6 @@ function App() {
     const {name, value} = event.target
     setFormData({...formData, [name]: value})
   }
-
-  // console.log(formData)
   
   const handleZap = () => {
     const {name, email, message} = formData
@@ -62,56 +64,16 @@ function App() {
         </section>
 
         <section className={styles.s2} id='s2'>
-          <h2 className={styles.tecTitle}>Tecnologias</h2>
+          <h2 className={styles.tecTitle}>TECNOLOGIAS</h2>
           <div className={styles.wrapCards}>
-            <div className={styles.card}>
-              <img width={100} src={htmlImg} alt="HTML" />
-              <h3>HTML</h3>
-              <p>HTML é a sigla para Hypertext Markup Language
-                (Linguagem de Marcação de Hipertexto) e é a
-                linguagem de marcação padrão usada para criar
-                e estruturar páginas da web.</p>
-            </div>
-            <div className={styles.card}>
-              <img width={100} src={cssImg} alt="CSS" />
-              <h3>CSS</h3>
-              <p>CSS (Cascading Style Sheets) é uma linguagem de
-                estilo usada para descrever a apresentação
-                visual de um documento escrito em linguagem
-                de marcação como HTML.</p>
-            </div>
-            <div className={styles.card}>
-              <img width={100} src={jsImg} alt="JS" />
-              <h3>JS</h3>
-              <p>JavaScript é uma linguagem de programação leve,
-                interpretada e versátil, usada para tornar páginas
-                da web dinâmicas e interativas.</p>
-            </div>
-            <div className={styles.card}>
-              <img width={100} src={viteImg} alt="VITE" />
-              <h3>VITE JS</h3>
-              <p>Vite.js é uma ferramenta de construção de front-end moderna,
-                rápida e leve, projetada para aprimorar significativamente
-                a experiência de desenvolvimento de aplicações web.</p>
-            </div>
-            <div className={styles.card}>
-              <img width={100} src={reactImg} alt="REACT" />
-              <h3>REACT</h3>
-              <p>No contexto de desenvolvimento de software,
-                o React é uma biblioteca que permite
-                criar componentes reutilizáveis para
-                criar interfaces interativas e dinâmicas
-                de forma eficiente.</p>
-            </div>
-            <div className={styles.card}>
-              <img width={100} src={vercelImg} alt="VERCEL" />
-              <h3>VERCEL</h3>
-              <p>Vercel é uma plataforma de nuvem que
-                facilita a criação e implantação de
-                aplicativos web modernos, sendo ideal
-                para desenvolvedores front-end.</p>
-            </div>
-          </div>
+              {dados.map((item) => {
+                return(
+                  <div key={item.id}>
+                    <Card tec={item.tecnologia} image={item.imagem} text={item.texto}/>
+                  </div>
+                )
+              })}
+         </div>
         </section>
 
         <section id='s3'>
